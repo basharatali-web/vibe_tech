@@ -4,41 +4,61 @@ import { hash } from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Plans
+  // Plans (prices are in minor units: USD cents)
   await prisma.plan.upsert({
     where: { slug: "free" },
-    update: {},
+    update: { currency: "USD", price: 0, isActive: true, features: { features: ["Basic Analytics", "3 runs/day", "Community Support"] }, limits: { monthly: 1000 } },
     create: {
       slug: "free",
       name: "Free",
       price: 0,
-      currency: "PKR",
-      features: { features: ["Basic Access"] },
+      currency: "USD",
+      features: { features: ["Basic Analytics", "3 runs/day", "Community Support"] },
       limits: { monthly: 1000 },
+      isActive: true,
     },
   });
+
   await prisma.plan.upsert({
     where: { slug: "pro" },
-    update: {},
+    update: { currency: "USD", price: 999, isActive: true, features: { features: ["Unlimited runs", "Advanced Analytics", "API access", "Email + Chat Support"] }, limits: { monthly: 10000 } },
     create: {
       slug: "pro",
       name: "Pro",
-      price: 250000,
-      currency: "PKR",
-      features: { features: ["Priority Support"] },
+      price: 999, // $9.99
+      currency: "USD",
+      features: { features: ["Unlimited runs", "Advanced Analytics", "API access", "Email + Chat Support"] },
       limits: { monthly: 10000 },
+      isActive: true,
     },
   });
+
   await prisma.plan.upsert({
-    where: { slug: "business" },
-    update: {},
+    where: { slug: "corporate" },
+    update: { currency: "USD", price: 4999, isActive: true, features: { features: ["All Pro features", "Multi-user accounts", "Deep analytics", "Dedicated support", "Custom integrations"] }, limits: { monthly: 100000 } },
     create: {
-      slug: "business",
-      name: "Business",
-      price: 750000,
-      currency: "PKR",
-      features: { features: ["Teams"] },
+      slug: "corporate",
+      name: "Corporate",
+      price: 4999, // $49.99
+      currency: "USD",
+      features: { features: ["All Pro features", "Multi-user accounts", "Deep analytics", "Dedicated support", "Custom integrations"] },
       limits: { monthly: 100000 },
+      isActive: true,
+    },
+  });
+
+  // ISP Enterprise in pipeline (not active yet)
+  await prisma.plan.upsert({
+    where: { slug: "isp-enterprise" },
+    update: { currency: "USD", price: 0, isActive: false, features: { features: ["Enterprise-scale infra", "24/7 dedicated team", "High security", "Custom pricing & SLAs"] }, limits: { monthly: 1000000 } },
+    create: {
+      slug: "isp-enterprise",
+      name: "ISP Enterprise (Coming Soon)",
+      price: 0,
+      currency: "USD",
+      features: { features: ["Enterprise-scale infra", "24/7 dedicated team", "High security", "Custom pricing & SLAs"] },
+      limits: { monthly: 1000000 },
+      isActive: false, // pipeline
     },
   });
 
