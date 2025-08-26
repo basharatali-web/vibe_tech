@@ -1,5 +1,11 @@
-generator client { provider = "prisma-client-js" }
-datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
 model User {
   id           String   @id @default(cuid())
@@ -67,10 +73,24 @@ model ServiceUsage {
   periodEnd   DateTime
 }
 
-enum Role { USER ADMIN }
+enum Role {
+  USER
+  ADMIN
+}
 
-enum PaymentMethod { payoneer bank }
+enum PaymentMethod {
+  PAYONEER
+  BANK
+}
 
-enum PaymentStatus { PENDING APPROVED DECLINED }
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  DECLINED
+}
 
-enum SubStatus { ACTIVE CANCELED EXPIRED }
+enum SubStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+}
