@@ -1,14 +1,24 @@
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { name, email, password } = req.body;
+    try {
+      const { name, email, password } = req.body || {};
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: 'All fields are required' });
+      if (!name || !email || !password) {
+        return res.status(400).json({ error: 'All fields are required' });
+      }
+
+      // Example success response
+      return res.status(200).json({
+        success: true,
+        message: 'Signup successful!',
+        user: { name, email },
+      });
+    } catch (error) {
+      console.error('Error in signup API:', error);
+      return res.status(500).json({ error: 'Internal server error' });
     }
-
-    // ⚙️ یہاں آپ مستقبل میں database یا Payoneer API وغیرہ connect کریں گے
-    return res.status(200).json({ message: 'Signup successful', user: { name, email } });
   } else {
-    res.status(405).json({ error: 'Method not allowed' });
+    // Handle other HTTP methods
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 }
