@@ -1,4 +1,5 @@
 // /pages/index.js
+
 export default function Home() {
   return (
     <div style={{
@@ -6,16 +7,12 @@ export default function Home() {
       padding: '80px',
       fontFamily: 'Arial, sans-serif'
     }}>
-      <h1>
-        Welcome to <span style={{ color: '#0070f3' }}>Vibe Tech</span>
-      </h1>
-
+      <h1>Welcome to <span style={{ color: '#0070f3' }}>Vibe Tech</span></h1>
       <p style={{ fontSize: '18px', marginTop: '12px' }}>
         Your Next.js SaaS platform is live and ready!
       </p>
-
       <a
-        href="https://vibe-tech.vercel.app"
+        href="https://vibe-tech.vercel.app/"
         target="_blank"
         rel="noopener noreferrer"
         style={{
