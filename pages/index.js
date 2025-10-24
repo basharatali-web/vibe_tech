@@ -1,31 +1,32 @@
+// pages/index.js
 export default function Home() {
   return (
-    <div
-      style={{
-        fontFamily: 'Arial, sans-serif',
-        textAlign: 'center',
-        padding: '100px',
-        backgroundColor: '#f8f9fa',
-        color: '#333',
-      }}
-    >
-      <h1>Welcome to <span style={{ color: '#0070f3' }}>Vibe Tech</span> 🚀</h1>
-      <p style={{ fontSize: '18px' }}>
+    <div style={{
+      textAlign: 'center',
+      padding: '80px',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      <h1 style={{ fontSize: 48, margin: 0 }}>
+        Welcome to <span style={{ color: '#0070f3' }}>Vibe Tech</span>
+      </h1>
+
+      <p style={{ fontSize: 18, marginTop: 18 }}>
         Your Next.js SaaS platform is live and ready!
       </p>
+
       <a
-        href="https://vibe-tech-tau.vercel.app/"
+        href="https://vibe-tech-tau.vercel.app/"  /* <-- اپنے current domain یہاں رکھیں */
         target="_blank"
         rel="noopener noreferrer"
         style={{
           display: 'inline-block',
-          marginTop: '20px',
-          padding: '10px 25px',
+          marginTop: 28,
           backgroundColor: '#0070f3',
           color: '#fff',
-          borderRadius: '6px',
-          fontWeight: 'bold',
-          textDecoration: 'none',
+          padding: '12px 28px',
+          borderRadius: 8,
+          fontWeight: '700',
+          textDecoration: 'none'
         }}
       >
         Visit Live Site
