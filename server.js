@@ -1,42 +1,39 @@
 const express = require("express");
 const cors = require("cors");
+const fal = require("@fal-ai/serverless-client");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
+
+fal.config({
+  credentials: process.env.FAL_API_KEY
+});
 
 app.post("/tryon", async (req, res) => {
   try {
     const { userImage, clothImage } = req.body;
 
-    const response = await fetch(
-      "https://queue.fal.run/fal-ai/image-apps-v2/virtual-try-on",
+    const result = await fal.run(
+      "fal-ai/image-apps-v2/virtual-try-on",
       {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Key ${process.env.FAL_API_KEY}`
-        },
-        body: JSON.stringify({
-          input: {
-            person_image_url: userImage,
-            clothing_image_url: clothImage
-          }
-        })
+        input: {
+          person_image_url: userImage,
+          clothing_image_url: clothImage
+        }
       }
     );
 
-    const data = await response.json();
-
     res.json({
       success: true,
-      result: data
+      result
     });
 
-  } catch (error) {
+  } catch (err) {
     res.json({
       success: false,
-      error: error.message
+      error: err.message
     });
   }
 });
