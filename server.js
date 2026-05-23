@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const fal = require("@fal-ai/serverless-client");
+const { fal } = require("@fal-ai/client");
 
 const app = express();
 
@@ -11,11 +11,15 @@ fal.config({
   credentials: process.env.FAL_API_KEY
 });
 
+app.get("/", (req, res) => {
+  res.send("AI Try-On API is running");
+});
+
 app.post("/tryon", async (req, res) => {
   try {
     const { userImage, clothImage } = req.body;
 
-    const result = await fal.run(
+    const result = await fal.subscribe(
       "fal-ai/image-apps-v2/virtual-try-on",
       {
         input: {
@@ -27,19 +31,15 @@ app.post("/tryon", async (req, res) => {
 
     res.json({
       success: true,
-      result
+      result: result.data
     });
 
-  } catch (err) {
+  } catch (error) {
     res.json({
       success: false,
-      error: err.message
+      error: error.message
     });
   }
-});
-
-app.get("/", (req, res) => {
-  res.send("AI Try-On API is running");
 });
 
 const PORT = process.env.PORT || 10000;
