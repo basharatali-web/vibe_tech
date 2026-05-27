@@ -1,37 +1,26 @@
 const express = require("express");
 const cors = require("cors");
-const { fal } = require("@fal-ai/client");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 
-fal.config({
-  credentials: process.env.FAL_API_KEY
-});
-
 app.get("/", (req, res) => {
-  res.send("AI Try-On API is running");
+  res.send("Free Try-On API Running");
 });
 
 app.post("/tryon", async (req, res) => {
   try {
     const { userImage, clothImage } = req.body;
 
-    const result = await fal.subscribe(
-      "fal-ai/image-apps-v2/virtual-try-on",
-      {
-        input: {
-          person_image_url: userImage,
-          clothing_image_url: clothImage
-        }
-      }
-    );
-
     res.json({
       success: true,
-      result: result.data
+      result: {
+        message: "Free backend connected successfully",
+        person: userImage,
+        cloth: clothImage
+      }
     });
 
   } catch (error) {
