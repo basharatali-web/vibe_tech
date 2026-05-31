@@ -1,51 +1,96 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>AI Try-On Test</title>
 </head>
+
 <body>
 
-<h2>AI Try-On Test Page</h2>
+  <h2>AI Try-On Test Page</h2>
 
-<p>User Image</p>
-<input type="file" id="userImg">
+  <p>User Image</p>
+  <input type="file" id="userImg">
 
-<p>Cloth Image</p>
-<input type="file" id="clothImg">
+  <p>Cloth Image</p>
+  <input type="file" id="clothImg">
 
-<br><br>
+  <br><br>
 
-<button onclick="run()">Run Try-On</button>
+  <button onclick="run()">Run Try-On</button>
 
-<pre id="output">Result will show here...</pre>
+  <br><br>
 
-<script>
-async function run() {
-  const userFile = document.getElementById('userImg').files[0];
-  const clothFile = document.getElementById('clothImg').files[0];
+  <pre id="output">Result will show here...</pre>
 
-  const toBase64 = file => new Promise((res, rej) => {
-    const r = new FileReader();
-    r.readAsDataURL(file);
-    r.onload = () => res(r.result);
-    r.onerror = rej;
-  });
+  <br>
 
-  const userImage = await toBase64(userFile);
-  const clothImage = await toBase64(clothFile);
+  <img
+    id="outputImage"
+    style="max-width:300px;border-radius:10px;display:none;"
+  >
 
-  const response = await fetch("https://real-tryon-api.onrender.com/tryon", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userImage, clothImage })
-  });
+  <script>
+    async function run() {
 
-  const data = await response.json();
+      const userFile =
+        document.getElementById('userImg').files[0];
 
-  document.getElementById("output").innerText =
-    JSON.stringify(data, null, 2);
-}
-</script>
+      const clothFile =
+        document.getElementById('clothImg').files[0];
+
+      const toBase64 = file =>
+        new Promise((res, rej) => {
+
+          const r = new FileReader();
+
+          r.readAsDataURL(file);
+
+          r.onload = () => res(r.result);
+
+          r.onerror = rej;
+        });
+
+      const userImage =
+        await toBase64(userFile);
+
+      const clothImage =
+        await toBase64(clothFile);
+
+      const response = await fetch(
+        "https://real-tryon-api.onrender.com/tryon",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            userImage,
+            clothImage
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      document.getElementById("output").innerText =
+        JSON.stringify(data, null, 2);
+
+      if (data.success) {
+
+        const img =
+          document.getElementById("outputImage");
+
+        img.src =
+          "https://dummyimage.com/400x500/000/fff&text=AI+Try-On+Ready";
+
+        img.style.display = "block";
+      }
+    }
+  </script>
 
 </body>
+
 </html>
