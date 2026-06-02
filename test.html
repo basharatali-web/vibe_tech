@@ -10,18 +10,48 @@
   <h2>AI Try-On Test Page</h2>
 
   <p>User Image</p>
-  <input type="file" id="userImg" accept="image/*">
+
+  <input
+    type="file"
+    id="userImg"
+    accept="image/*"
+  >
+
+  <br><br>
+
+  <img
+    id="userPreview"
+    style="max-width:200px;border-radius:10px;display:none;"
+  >
+
+  <br><br>
 
   <p>Cloth Image</p>
-  <input type="file" id="clothImg" accept="image/*">
+
+  <input
+    type="file"
+    id="clothImg"
+    accept="image/*"
+  >
 
   <br><br>
 
-  <button onclick="run()">Run Try-On</button>
+  <img
+    id="clothPreview"
+    style="max-width:200px;border-radius:10px;display:none;"
+  >
 
   <br><br>
 
-  <pre id="output">Result will show here...</pre>
+  <button id="runBtn" onclick="run()">
+    Run Try-On
+  </button>
+
+  <br><br>
+
+  <pre id="output">
+Result will show here...
+  </pre>
 
   <br>
 
@@ -32,7 +62,51 @@
 
   <script>
 
+    // User preview
+    document.getElementById("userImg")
+      .addEventListener("change", function (e) {
+
+        const file = e.target.files[0];
+
+        if (file) {
+
+          const url = URL.createObjectURL(file);
+
+          const img =
+            document.getElementById("userPreview");
+
+          img.src = url;
+
+          img.style.display = "block";
+        }
+      });
+
+    // Cloth preview
+    document.getElementById("clothImg")
+      .addEventListener("change", function (e) {
+
+        const file = e.target.files[0];
+
+        if (file) {
+
+          const url = URL.createObjectURL(file);
+
+          const img =
+            document.getElementById("clothPreview");
+
+          img.src = url;
+
+          img.style.display = "block";
+        }
+      });
+
     async function run() {
+
+      const button =
+        document.getElementById("runBtn");
+
+      const output =
+        document.getElementById("output");
 
       const userFile =
         document.getElementById("userImg").files[0];
@@ -43,13 +117,13 @@
       // Safety check
       if (!userFile || !clothFile) {
 
-        document.getElementById("output").innerText =
+        output.innerText =
           "Please select both images.";
 
         return;
       }
 
-      const toBase64 = file =>
+      const toBase64 = (file) =>
         new Promise((resolve, reject) => {
 
           const reader = new FileReader();
@@ -63,7 +137,9 @@
 
       try {
 
-        document.getElementById("output").innerText =
+        button.disabled = true;
+
+        output.innerText =
           "Processing AI Try-On...";
 
         const userImage =
@@ -90,9 +166,10 @@
 
         const data = await response.json();
 
-        document.getElementById("output").innerText =
+        output.innerText =
           JSON.stringify(data, null, 2);
 
+        // Show output preview
         if (data.success) {
 
           const img =
@@ -105,8 +182,12 @@
 
       } catch (error) {
 
-        document.getElementById("output").innerText =
+        output.innerText =
           "Error: " + error.message;
+
+      } finally {
+
+        button.disabled = false;
       }
     }
 
