@@ -4,26 +4,44 @@ const cors = require("cors");
 const app = express();
 
 app.use(cors());
-app.use(express.json({ limit: "50mb" }));
+
+app.use(express.json({
+  limit: "50mb"
+}));
 
 app.get("/", (req, res) => {
-  res.send("Free Try-On API Running");
+
+  res.send("Overlay Try-On API Running");
 });
 
 app.post("/tryon", async (req, res) => {
-  try {
-    const { userImage, clothImage } = req.body;
 
+  try {
+
+    const {
+      userImage,
+      clothImage
+    } = req.body;
+
+    if (!userImage || !clothImage) {
+
+      return res.json({
+        success: false,
+        error: "Both images required"
+      });
+    }
+
+    // Send cloth image back
     res.json({
       success: true,
+
       result: {
-        message: "Free backend connected successfully",
-        person: userImage,
-        cloth: clothImage
+        mergedImage: clothImage
       }
     });
 
   } catch (error) {
+
     res.json({
       success: false,
       error: error.message
@@ -31,8 +49,12 @@ app.post("/tryon", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 10000;
+const PORT =
+  process.env.PORT || 10000;
 
 app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+
+  console.log(
+    "Server running on port " + PORT
+  );
 });
