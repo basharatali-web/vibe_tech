@@ -2,67 +2,153 @@
 <html>
 
 <head>
-  <title>AI Try-On Test</title>
+
+  <title>AI Virtual Try-On</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+
+    body {
+
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      text-align: center;
+      margin: 0;
+    }
+
+    .box {
+
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 950px;
+      margin: auto;
+    }
+
+    .images {
+
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .card {
+
+      background: #fafafa;
+      padding: 15px;
+      border-radius: 12px;
+      width: 250px;
+    }
+
+    .card h3 {
+
+      margin-top: 0;
+    }
+
+    img {
+
+      width: 100%;
+      border-radius: 10px;
+      display: none;
+    }
+
+    button {
+
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    pre {
+
+      background: #111;
+      color: #00ff66;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      text-align: left;
+      margin-top: 20px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+  </style>
+
 </head>
 
 <body>
 
-  <h2>AI Try-On Test Page</h2>
+  <div class="box">
 
-  <p>User Image</p>
+    <h1>AI Virtual Try-On</h1>
 
-  <input
-    type="file"
-    id="userImg"
-    accept="image/*"
-  >
+    <div class="images">
 
-  <br><br>
+      <div class="card">
 
-  <img
-    id="userPreview"
-    style="max-width:200px;border-radius:10px;display:none;"
-  >
+        <h3>User Image</h3>
 
-  <br><br>
+        <input
+          type="file"
+          id="userImg"
+          accept="image/*"
+        >
 
-  <p>Cloth Image</p>
+        <br><br>
 
-  <input
-    type="file"
-    id="clothImg"
-    accept="image/*"
-  >
+        <img id="userPreview">
 
-  <br><br>
+      </div>
 
-  <img
-    id="clothPreview"
-    style="max-width:200px;border-radius:10px;display:none;"
-  >
+      <div class="card">
 
-  <br><br>
+        <h3>Cloth Image</h3>
 
-  <button id="runBtn" onclick="run()">
-    Run Try-On
-  </button>
+        <input
+          type="file"
+          id="clothImg"
+          accept="image/*"
+        >
 
-  <br><br>
+        <br><br>
 
-  <pre id="output">
+        <img id="clothPreview">
+
+      </div>
+
+      <div class="card">
+
+        <h3>Result</h3>
+
+        <img id="outputImage">
+
+      </div>
+
+    </div>
+
+    <button
+      id="runBtn"
+      onclick="run()"
+    >
+      Run Try-On
+    </button>
+
+    <pre id="output">
 Result will show here...
-  </pre>
+    </pre>
 
-  <br>
-
-  <img
-    id="outputImage"
-    style="max-width:300px;border-radius:10px;display:none;"
-  >
+  </div>
 
   <script>
 
-    // User preview
+    // User image preview
     document.getElementById("userImg")
       .addEventListener("change", function (e) {
 
@@ -81,7 +167,7 @@ Result will show here...
         }
       });
 
-    // Cloth preview
+    // Cloth image preview
     document.getElementById("clothImg")
       .addEventListener("change", function (e) {
 
@@ -108,13 +194,16 @@ Result will show here...
       const output =
         document.getElementById("output");
 
+      const resultImg =
+        document.getElementById("outputImage");
+
       const userFile =
         document.getElementById("userImg").files[0];
 
       const clothFile =
         document.getElementById("clothImg").files[0];
 
-      // Safety check
+      // Validation
       if (!userFile || !clothFile) {
 
         output.innerText =
@@ -122,6 +211,9 @@ Result will show here...
 
         return;
       }
+
+      // Reset previous result
+      resultImg.style.display = "none";
 
       const toBase64 = (file) =>
         new Promise((resolve, reject) => {
@@ -138,6 +230,9 @@ Result will show here...
       try {
 
         button.disabled = true;
+
+        button.innerText =
+          "Processing...";
 
         output.innerText =
           "Processing AI Try-On...";
@@ -169,15 +264,12 @@ Result will show here...
         output.innerText =
           JSON.stringify(data, null, 2);
 
-        // Show output preview
+        // Demo preview
         if (data.success) {
 
-          const img =
-            document.getElementById("outputImage");
+          resultImg.src = userImage;
 
-          img.src = userImage;
-
-          img.style.display = "block";
+          resultImg.style.display = "block";
         }
 
       } catch (error) {
@@ -188,6 +280,9 @@ Result will show here...
       } finally {
 
         button.disabled = false;
+
+        button.innerText =
+          "Run Try-On";
       }
     }
 
