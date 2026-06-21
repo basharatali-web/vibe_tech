@@ -264,12 +264,21 @@ Result will show here...
         output.innerText =
           JSON.stringify(data, null, 2);
 
-        // Demo preview
+        const data = await response.json();
+
+        output.innerText =
+          JSON.stringify(data, null, 2);
+
         if (data.success) {
 
-          resultImg.src = userImage;
+          resultImg.src = data.image;
 
           resultImg.style.display = "block";
+
+        } else {
+
+          output.innerText =
+            JSON.stringify(data, null, 2);
         }
 
       } catch (error) {
