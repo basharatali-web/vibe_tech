@@ -266,15 +266,24 @@ const response = await fetch(
 
 output.innerText = "Response received...";
 
+output.innerText = "Response received...";
+
 const data = await response.json();
 
 output.innerText =
   JSON.stringify(data, null, 2);
-        const data = await response.json();
 
-        output.innerText =
-          JSON.stringify(data, null, 2);
+if (data.success) {
 
+  resultImg.src = data.image;
+
+  resultImg.style.display = "block";
+
+} else {
+
+  output.innerText =
+    JSON.stringify(data, null, 2);
+}
         const data = await response.json();
 
         output.innerText =
