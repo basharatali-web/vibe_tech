@@ -243,22 +243,33 @@ Result will show here...
         const clothImage =
           await toBase64(clothFile);
 
-        const response = await fetch(
+        const controller = new AbortController();
+
+setTimeout(() => {
+  controller.abort();
+}, 180000);
+
+const response = await fetch(
   "https://idm-vton-backend-odhi.onrender.com/tryon",
-          {
-            method: "POST",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      userImage,
+      clothImage
+    }),
+    signal: controller.signal
+  }
+);
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+output.innerText = "Response received...";
 
-            body: JSON.stringify({
-              userImage,
-              clothImage
-            })
-          }
-        );
+const data = await response.json();
 
+output.innerText =
+  JSON.stringify(data, null, 2);
         const data = await response.json();
 
         output.innerText =
