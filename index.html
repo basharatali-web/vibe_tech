@@ -273,10 +273,18 @@ output.innerText =
 
 if (data.success) {
 
-  resultImg.src = data.image;
+  resultImg.src = data.result.mergedImage;
 
   resultImg.style.display = "block";
 
+  output.innerText = "Image generated successfully";
+
+} else {
+
+  output.innerText =
+    JSON.stringify(data, null, 2);
+
+}
 } else {
 
   output.innerText =
