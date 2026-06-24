@@ -265,10 +265,8 @@ Result will show here...
           JSON.stringify(data, null, 2);
 
         // Demo preview
-        if (data.image) {
-
-  resultImg.src = data.image;
-
+        console.log(data);
+output.innerText = JSON.stringify(data, null, 2);
   resultImg.onload = () => {
     resultImg.style.display = "block";
   };
