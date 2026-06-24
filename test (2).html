@@ -269,7 +269,13 @@ Result will show here...
 
   resultImg.src = data.image;
 
-  resultImg.style.display = "block";
+  resultImg.onload = () => {
+    resultImg.style.display = "block";
+  };
+
+  resultImg.onerror = () => {
+    output.innerText = "Result image could not be displayed.";
+  };
 
 }
       } catch (error) {
