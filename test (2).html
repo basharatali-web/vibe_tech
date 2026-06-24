@@ -267,7 +267,9 @@ Result will show here...
         // Demo preview
         if (data.success) {
 
-  resultImg.src = data.image;
+  resultImg.src =
+    data.image ||
+    data.result?.mergedImage;
 
   resultImg.style.display = "block";
 }
