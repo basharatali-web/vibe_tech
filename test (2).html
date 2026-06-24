@@ -265,13 +265,12 @@ Result will show here...
           JSON.stringify(data, null, 2);
 
         // Demo preview
-        if (data.success) {
+        if (data.image) {
 
-  resultImg.src =
-    data.image ||
-    data.result?.mergedImage;
+  resultImg.src = data.image;
 
   resultImg.style.display = "block";
+
 }
       } catch (error) {
 
