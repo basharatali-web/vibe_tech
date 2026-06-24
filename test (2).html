@@ -267,11 +267,10 @@ Result will show here...
         // Demo preview
         if (data.success) {
 
-          resultImg.src = userImage;
+  resultImg.src = data.image;
 
-          resultImg.style.display = "block";
-        }
-
+  resultImg.style.display = "block";
+}
       } catch (error) {
 
         output.innerText =
